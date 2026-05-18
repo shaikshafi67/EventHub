@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Client Registration</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+    }
+    .form-container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 25px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      margin: 10px 0;
+    }
+    .checkbox-container input[type="checkbox"] {
+      margin-right: 10px;
+    }
+  </style>
+  <script>
+    function validateForm() {
+      const email = document.forms["clientForm"]["email"].value;
+      const mobile = document.forms["clientForm"]["mobile"].value;
+      const password = document.forms["clientForm"]["password"].value;
+
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+      const mobilePattern = /^[0-9]{10}$/;
+      const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{8,}$/;
+
+      if (!emailPattern.test(email)) {
+        alert("Email must be a valid Gmail address (example@gmail.com).");
+        return false;
+      }
+      if (!mobilePattern.test(mobile)) {
+        alert("Mobile number must be exactly 10 digits.");
+        return false;
+      }
+      if (!passwordPattern.test(password)) {
+        alert("Password must be at least 8 characters long and include letters, numbers, and a special character.");
+        return false;
+      }
+      return true;
+    }
+  </script>
+</head>
+<body>
+  <div class="form-container">
+    <form id="clientForm" name="clientForm" action="client_register.php" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+      <h2>Client Registration</h2>
+
+      <input type="text" name="full_name" placeholder="Full Name / Organization Name" required>
+      <input type="text" name="username" placeholder="Username" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="text" name="mobile" placeholder="Mobile Number" required>
+      <input type="password" name="password" placeholder="Password" required>
+
+      <input type="text" name="company_name" placeholder="Company/Business Name (Optional)">
+      <input type="text" name="business_type" placeholder="Business Type">
+      <input type="url" name="website" placeholder="Website / Social Media">
+
+      <input type="text" name="city" placeholder="City">
+      <input type="text" name="state" placeholder="State">
+      <textarea name="address" placeholder="Address" rows="3"></textarea>
+
+      <label>Aadhar Card (PDF/JPG/PNG):</label>
+      <input type="file" name="aadhar" accept=".pdf,.jpg,.jpeg,.png" required>
+
+      <label>PAN Card (PDF/JPG/PNG):</label>
+      <input type="file" name="pan" accept=".pdf,.jpg,.jpeg,.png" required>
+
+      <label>Company Logo / Photo (Optional):</label>
+      <input type="file" name="photo" accept=".jpg,.jpeg,.png">
+
+      <div class="checkbox-container">
+        <input type="checkbox" name="terms" required>
+        <label for="terms">I agree to the <a href="Terms.html">Terms & Conditions</a>.</label>
+      </div>
+
+      <input type="hidden" name="status" value="pending">
+      <button type="submit">Register as Client</button>
+    </form>
+  </div>
+</body>
+</html>

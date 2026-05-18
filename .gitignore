@@ -1,0 +1,18 @@
+# Uploaded files (user-generated content — do not commit)
+uploads/
+
+# PHP environment / config overrides
+.env
+databaseConnection.local.php
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor folders
+.vscode/
+.idea/
+
+# XAMPP / server logs
+*.log

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Event Registration Form</title>
+  <style>
+    /* Global Styling */
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      transition: all 0.3s ease-in-out;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #e0f7fa, #fff3e0);
+      padding: 30px;
+    }
+
+    .form-container {
+      max-width: 850px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      padding: 35px;
+      margin: auto;
+      border-radius: 15px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      border: 1px solid #ccc;
+    }
+
+    h2 {
+      text-align: center;
+      color: #00796b;
+      font-size: 32px;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-top: 18px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    input[type="time"],
+    input[type="number"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border: 1px solid #bbb;
+      border-radius: 8px;
+      font-size: 15px;
+      background: #fdfdfd;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #4db6ac;
+      outline: none;
+      box-shadow: 0 0 6px rgba(77, 182, 172, 0.5);
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .checkbox-container,
+    .radio-container {
+      margin-top: 20px;
+    }
+
+    .checkbox-container label,
+    .radio-container label {
+      font-weight: normal;
+      margin-left: 8px;
+      color: #444;
+      font-size: 15px;
+    }
+
+    .radio-container label input {
+      margin-right: 5px;
+    }
+
+    .submit-btn {
+      background: linear-gradient(90deg, #00bfa5, #1de9b6);
+      color: white;
+      padding: 14px 25px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 30px;
+      width: 100%;
+      font-size: 16px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .submit-btn:hover {
+      background: linear-gradient(90deg, #00796b, #00bfa5);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    #otherCategoryField,
+    #priceField {
+      display: none;
+      margin-top: 12px;
+    }
+
+    /* Responsive Enhancements */
+    @media (max-width: 600px) {
+      .form-container {
+        padding: 20px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Event Registration Form</h2>
+    <form action="submit_event.php" method="POST" enctype="multipart/form-data">
+
+      <label for="event_name">Event Name</label>
+      <input type="text" name="event_name" required>
+
+      <label for="venue">Venue Name</label>
+      <input type="text" name="venue" required>
+
+      <label for="event_date">Date</label>
+      <input type="date" name="event_date" required>
+
+      <label for="start_time">Time From</label>
+      <input type="time" name="start_time" required>
+
+      <label for="end_time">Time To</label>
+      <input type="time" name="end_time" required>
+
+      <label for="speaker">Speaker / Host</label>
+      <input type="text" name="speaker">
+
+      <label for="event_description">Event Description</label>
+      <textarea name="event_description" rows="4" placeholder="Enter detailed description..." required></textarea>
+
+      <label for="event_category">Event Category</label>
+      <select name="event_category" id="event_category" onchange="showOtherCategory()">
+        <option value="">-- Select Category --</option>
+        <option value="Technology">Technology</option>
+        <option value="Health">Health</option>
+        <option value="Education">Education</option>
+        <option value="Music">Music</option>
+        <option value="Business">Business</option>
+        <option value="Others">Others</option>
+      </select>
+
+      <div id="otherCategoryField">
+        <label for="other_category">Specify Other Category</label>
+        <input type="text" name="other_category">
+      </div>
+
+      <label for="organizer_phone">Organizer’s Phone Number</label>
+      <input type="tel" name="organizer_phone" required pattern="[0-9]{10}" placeholder="e.g. 9876543210">
+
+      <label for="event_poster">Event Banner/Poster</label>
+      <input type="file" name="event_poster" accept="image/*" required>
+
+      <label for="total_seats">Total Seats Available</label>
+      <input type="number" name="total_seats" min="1" required>
+
+      <label for="max_seats">Maximum Seats per Reservation</label>
+      <input type="number" name="max_seats" min="1" required>
+
+      <div class="checkbox-container">
+        <input type="checkbox" name="waitlist" value="1" id="waitlist">
+        <label for="waitlist">Enable waitlist when all seats are filled</label>
+      </div>
+
+      <div class="radio-container">
+        <label>Is this event paid?</label>
+        <label><input type="radio" name="payment_status" value="paid" onchange="togglePriceField()"> Paid</label>
+        <label><input type="radio" name="payment_status" value="unpaid" onchange="togglePriceField()" checked> Unpaid</label>
+      </div>
+
+      <div id="priceField">
+        <label for="event_price">Event Price (in ₹)</label>
+        <input type="number" name="event_price" id="event_price" min="1" step="0.01" placeholder="Enter price">
+      </div>
+
+      <div class="checkbox-container">
+        <input type="checkbox" name="terms" id="terms" required>
+        <label for="terms">I understand that participation may involve risks. I release the organizers from liability.</label>
+      </div>
+
+      <label for="date_signed">Date Signed</label>
+      <input type="date" name="date_signed" required>
+
+      <button type="submit" class="submit-btn">Create Event</button>
+    </form>
+  </div>
+
+  <script>
+    function showOtherCategory() {
+      const categorySelect = document.getElementById('event_category');
+      const otherField = document.getElementById('otherCategoryField');
+      otherField.style.display = categorySelect.value === 'Others' ? 'block' : 'none';
+    }
+
+    function togglePriceField() {
+      const paymentStatus = document.querySelector('input[name="payment_status"]:checked').value;
+      const priceField = document.getElementById('priceField');
+      priceField.style.display = paymentStatus === 'paid' ? 'block' : 'none';
+    }
+
+    window.onload = togglePriceField;
+  </script>
+</body>
+</html>
